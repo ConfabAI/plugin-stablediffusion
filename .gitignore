@@ -1,0 +1,5 @@
+**.pyc
+
+modular-fastapi/mfa-stablediffusion/mfa-stablediffusion/lib/image_models/
+
+modular-fastapi/mfa-stablediffusion/mfa-stablediffusion/lib/loras/
