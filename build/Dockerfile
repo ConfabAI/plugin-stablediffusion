@@ -12,7 +12,7 @@ RUN apt install python3-pip -y
 WORKDIR /app/api
 
 # Install Poetry
-RUN pip3 install poetry
+RUN pip3 install --no-cache-dir poetry
 
 # Copy only the dependency files
 COPY pyproject.toml poetry.lock ./
@@ -20,10 +20,9 @@ COPY pyproject.toml poetry.lock ./
 # Copy files
 COPY . .
 
-RUN poetry lock
 
 # Install dependencies
-RUN poetry install
+RUN posetry lock && poetry install
 
 # Install Watchdog for auto discovery
 RUN poetry add watchdog
@@ -32,13 +31,11 @@ RUN poetry add watchdog
 
 FROM builder AS final
 
-WORKDIR /app
+# Set the working directory
+WORKDIR /app/api/modular-fastapi
 
 # Copy the installed dependencies from the builder stage
 COPY --from=builder /app/api /app/api
 
-# Set the working directory
-WORKDIR /app/api/modular-fastapi
-
 # Run the server
-CMD ["bash", "./start.sh"]
+ENTRYPOINT ["bash", "./start.sh"]
