@@ -34,8 +34,5 @@ FROM builder AS final
 # Set the working directory
 WORKDIR /app/api/modular-fastapi
 
-# Copy the installed dependencies from the builder stage
-COPY --from=builder /app/api /app/api
-
 # Run the server
 ENTRYPOINT ["bash", "./start.sh"]
