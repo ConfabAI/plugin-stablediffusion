@@ -13,6 +13,27 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v4 # Check out the code in the repository
 
+      - name: Remove Preinstalled Tools
+        run: |
+          echo "Removing Android SDK..."
+          sudo rm -rf /usr/local/lib/android
+
+          echo "Removing CodeQL..."
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+
+          echo "Removing GHC (Haskell)..."
+          sudo rm -rf /opt/ghc
+
+          echo "Removing .NET SDK..."
+          sudo rm -rf /usr/share/dotnet
+
+          echo "Removing Boost libraries..."
+          sudo rm -rf /usr/local/share/boost
+
+          echo "Removing Large Cached Packages..."
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
+
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
         with:
