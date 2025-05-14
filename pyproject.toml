@@ -13,10 +13,6 @@ python = "^3.9"
 # As we add new packages, we must add them here and rerun `poetry lock` and `poetry install --no-root`
 mfa-stablediffusion = { path = "/app/api/modular-fastapi/lib/mfa-stablediffusion/"}
 
-[[tool.poetry.source]]
-name = "pytorch-nightly"
-url = "https://download.pytorch.org/whl/nightly/cu128"
-
 [tool.poetry.group.plugins.dependencies]
 fastapi = "^0.115.4"
 uvicorn = "^0.32.0"
