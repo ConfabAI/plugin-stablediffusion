@@ -29,6 +29,9 @@ RUN poetry add watchdog
 
 # Stage 2: Build the final image
 
+RUN pip install --upgrade --force-reinstall --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu128
+
+
 FROM builder AS final
 
 # Set the working directory
