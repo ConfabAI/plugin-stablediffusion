@@ -5,9 +5,24 @@ from watchdog.events import FileSystemEventHandler
 
 class PluginHandler(FileSystemEventHandler):
     """Watches for new plugins and installs dependencies automatically."""
+
+    IGNORED_DIRS = [
+        ".git",
+        "__pycache__",
+        ".venv",
+        "venv",
+        "env",
+        ".env",
+        ".idea",
+        ".vscode",
+        ".pytest_cache",
+        ".mypy_cache",
+    ]
     
     def on_created(self, event):
-        if os.path.isdir(event.src_path):
+        if os.path.isdir(event.src_path) and not any(
+            ignored_dir in event.src_path for ignored_dir in self.IGNORED_DIRS
+        ):
             plugin_name = os.path.basename(event.src_path)
             print(f"New plugin detected: {plugin_name}")
 

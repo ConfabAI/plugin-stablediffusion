@@ -22,7 +22,7 @@ COPY . .
 
 
 # Install dependencies
-RUN poetry lock && poetry install
+RUN poetry install
 
 # Install Watchdog for auto discovery
 RUN poetry add watchdog

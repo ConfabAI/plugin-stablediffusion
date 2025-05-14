@@ -12,6 +12,9 @@ python = "^3.9"
 # sample-package = { path = "/app/api/modular-fastapi/lib/sample-package", develop = true }
 # As we add new packages, we must add them here and rerun `poetry lock` and `poetry install --no-root`
 mfa-stablediffusion = { path = "/app/api/modular-fastapi/lib/mfa-stablediffusion/"}
+torch = "^2.7.0"
+torchvision = "^0.22.0"
+torchaudio = "^2.7.0"
 
 
 [tool.poetry.group.plugins.dependencies]
