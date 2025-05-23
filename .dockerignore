@@ -1,0 +1,36 @@
+# Ignore Git and GitHub
+
+.git
+.github
+
+# Ignore build artifacts and cache
+
+**pycache**/
+_.pyc
+_.pyo
+\*.log
+
+# Ignore big ass files
+
+modular-fastapi/lib/mfa-stablediffusion/mfa-stablediffusion/image_models/
+modular-fastapi/lib/mfa-stablediffusion/mfa-stablediffusion/loras/
+
+# Ignore local development files
+
+.env
+.vscode
+_.swp
+_.bak
+
+# Node and Python specific
+
+node_modules
+dist
+build/\*.sh
+build/cache/
+
+# Docs and tests
+
+\*.md
+tests/
+docs/
