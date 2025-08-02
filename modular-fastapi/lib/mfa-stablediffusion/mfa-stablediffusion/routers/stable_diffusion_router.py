@@ -14,7 +14,9 @@ from ..factories.lora_factory import LoRAFactory
 from ..helpers.lora import get_all_loras_by_name
 from ..helpers.directory import get_root_folder
 from ..loras import create_all_loras
-from ..models.abstract_image_pipeline import AbstractImagePipeline
+
+# Pipeline Manager
+from ..managers.pipeline_manager import pipeline_manager
 
 # Input Objects
 from ..serializers.base_image_request import BaseImageRequest
@@ -24,8 +26,7 @@ from ..serializers.lora_request import LoraRequest
 
 # Exporters
 from ..export.export_yaml import YAMLExporter
-
-MODEL_DIRECTORY = f"{get_root_folder()}/image_models/"
+from ..settings import MODEL_DIRECTORY
 
 PREFIX = "/image_generation"
 
@@ -114,16 +115,19 @@ def export_safetensor_local(safetensor_name: str):
 
 @ROUTER.post("/generate/")
 def generate_picture(image: ImageWithLoras):
-    pipeline = AbstractImagePipeline(MODEL_DIRECTORY, image.model)
+    # If the pipeline is not loaded, load it
+    pipeline_manager.load_pipeline(MODEL_DIRECTORY, image.model)
+    # Loader will automatically load the pipeline and skip if already loaded
+    pipeline = pipeline_manager.get_pipeline(image.model)
     image_store = io.BytesIO()
     for generated_image in pipeline.generate_image(
-        image.prompt,
-        height=image.height,
-        width=image.width,
-        negative_prompt=image.negative_prompt,
-        loras = image.loras
-        ):
-        generated_image.save(image_store,"png")
+            image.prompt,
+            height=image.height,
+            width=image.width,
+            negative_prompt=image.negative_prompt,
+            loras=image.loras
+            ):
+        generated_image.save(image_store, "png")
         break
 
     # Cleanup our pipeline
