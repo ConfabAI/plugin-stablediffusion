@@ -7,8 +7,6 @@ from fastapi import Response, UploadFile, File, Form
 from fastapi.responses import FileResponse
 from fastapi import APIRouter
 
-from ..helpers.pipeline import __clean_up_pipeline
-
 from ..factories.lora_factory import LoRAFactory
 
 from ..helpers.lora import get_all_loras_by_name
@@ -75,8 +73,6 @@ def download_model_from_hugging_face(model_name: str):
     pipeline = DiffusionPipeline.from_pretrained(model_name)
     pipeline.save_pretrained(f"{MODEL_DIRECTORY}/{model_name.split('/')[-1]}")
 
-    # Cleanup our pipeline
-    __clean_up_pipeline(pipeline)
     return {"Status": "Downloaded"}
 
 @ROUTER.post("/export/safetensor/")
@@ -106,9 +102,6 @@ def export_safetensor_local(safetensor_name: str):
             raise type_error_message
     pipeline.save_pretrained(model_export_directory)
 
-    # Cleanup our pipeline
-    __clean_up_pipeline(pipeline)
-
     # Remove the old safe tensor
     os.remove(safetensor_directory)
     return {"model": safetensor_name.replace(extension, "")}
@@ -129,8 +122,5 @@ def generate_picture(image: ImageWithLoras):
             ):
         generated_image.save(image_store, "png")
         break
-
-    # Cleanup our pipeline
-    __clean_up_pipeline(pipeline)
 
     return Response(content=image_store.getvalue(), media_type="image/png")
